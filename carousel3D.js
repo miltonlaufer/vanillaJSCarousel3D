@@ -4,7 +4,6 @@ By Milton Läufer
 http://www.miltonlaufer.com.ar
 https://github.com/miltonlaufer
 */
-
 class Carousel3D {
     shortSpeed = 0.15;
     longSpeed = 1;
@@ -60,7 +59,7 @@ class Carousel3D {
         for (let z = 0; z < this.images.length; z++) {
             let elem = this.images[z];
             elem.style.left = elem.offsetLeft + 'px';
-            eval('this.' + elem.className + ' = elem.offsetLeft;');
+            this[elem.className] = elem.offsetLeft;
         }
         document.addEventListener('keydown', (e) => {
             switch (e.which) {
