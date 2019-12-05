@@ -1,0 +1,156 @@
+
+#carousel {
+    position: relative;
+    height: 600px;
+    top: 50%;
+    left: 0px;
+    width: 100%;
+    transform: translateY(-50%);
+    overflow: hidden;
+}
+
+#carousel div {
+    position: absolute;
+    opacity: 1;
+    border: 1px solid #ccc;
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 3px 3px #ccc;
+}
+
+#carousel div img {
+    width: 400px;
+}
+
+#carousel div.hideLeft {
+    left: -100px;
+}
+
+#carousel div.hideRight {
+    left: 100%;
+}
+
+#carousel div.hideRight, #carousel div.hideLeft {
+    opacity: 0;
+    top: 25%;
+    filter: grayscale(0.7) brightness(1.2);
+}
+
+#carousel div.hideLeft img, #carousel div.hideRight img {
+    width: 200px;
+}
+
+#carousel div.prev, #carousel div.next {
+    z-index: 5;
+    top: 10%;
+    filter: grayscale(0.7) brightness(1.2);
+}
+
+#carousel div.prev {
+    left: 20%;
+}
+
+#carousel div.next {
+    left: 60%;
+}
+
+#carousel div.next img, #carousel div.prev img {
+    width: 300px;
+}
+
+
+#carousel div.nextRightSecond, #carousel div.prevLeftSecond {
+    z-index: 4;
+    top: 20%;
+    opacity: 0.4;
+    filter: grayscale(0.7) brightness(1.2);
+}
+
+#carousel div.nextRightSecond {
+    left: 77%;
+}
+
+#carousel div.prevLeftSecond {
+    left: 7%;
+}
+
+#carousel div.nextRightSecond img, #carousel div.prevLeftSecond img {
+    width: 200px;
+}
+
+#carousel div.selected {
+    z-index: 10;
+    left: calc(100% / 2 - 220px);
+    top: 0%;
+}
+
+
+#carousel p {
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+}
+
+nav.carousel {
+    position: relative;
+    left: 0;
+    padding-left: calc(50% - 30px)
+}
+
+nav.carousel:hover {
+    cursor: default;
+}
+
+/* Hide the radio button */
+nav.carousel input[type=radio] {
+    display: none;
+}
+
+/* All styling takes place on the label element */
+nav.carousel label {
+    display: inline-block;
+    background: #ddd;
+    overflow: hidden;
+    text-indent: -999px;
+    border-radius: 100%;
+    width: 10px;
+    height: 10px;
+    box-shadow: inset 0 1px 1px 0 #999;
+}
+
+nav.carousel label:hover {
+    background: #bbb;
+    cursor: pointer;
+    box-shadow: inset 0 1px 1px 0 #777;
+}
+
+nav.carousel input:checked + label {
+    background: linear-gradient(#00CFFF, #1584bc);
+    box-shadow: inset 0 0 1px 1px #087DC0;
+}
+
+@media screen and (max-width: 982px) {
+    #carousel div.nextRightSecond {
+        left: 70%;
+    }
+
+    #carousel div.prevLeftSecond {
+        left: 5%;
+    }
+
+    #carousel div.selected {
+        left: calc(100% / 2 - 220px);
+    }
+
+    #carousel div.prev {
+        left: 15%;
+    }
+
+    #carousel div.next {
+        left: 50%;
+    }
+
+    nav.carousel {
+        top: 50%;
+    }
+}
