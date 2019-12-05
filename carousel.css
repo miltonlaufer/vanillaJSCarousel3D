@@ -94,7 +94,8 @@
 nav.carousel {
     position: relative;
     left: 0;
-    padding-left: calc(50% - 30px)
+    padding-left: calc(50% - 30px);
+    top: 10%;
 }
 
 nav.carousel:hover {
