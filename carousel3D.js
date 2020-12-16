@@ -5,55 +5,99 @@ http://www.miltonlaufer.com.ar
 https://github.com/miltonlaufer
 */
 class Carousel3D {
-    shortSpeed = 0.15;
-    longSpeed = 1;
-    swipeThreshold = 60;
-    touchstartX = 0;
-    touchendX = 0;
-    selected = null;
-    hideLeft = null;
-    hideRight = null;
-    nextRightSecond = null;
-    prevLeftSecond = null;
-    prev = null;
-    next = null;
-    images = [];
-    buttons = [];
+    constructor(obj, keys = false, nav = true) {
+        this.shortSpeed = 0.15;
+        this.longSpeed = 1;
+        this.swipeThreshold = 60;
+        this.touchstartX = 0;
+        this.touchendX = 0;
+        this.selected = null;
+        this.hideLeft = null;
+        this.hideRight = null;
+        this.nextRightSecond = null;
+        this.prevLeftSecond = null;
+        this.prev = null;
+        this.next = null;
+        this.images = [];
+        this.buttons = [];
+        this.navigation = true;
+        this.maxHeight = 0;
+        this.obj = null;
+        this.objName = "";
+        this.keys = false;
 
-    constructor(obj) {
-        this.images = document.querySelectorAll(`#${obj} div`);
-        let selectedNum = Math.floor(this.images.length / 2);
-        let myNav = document.createElement('nav');
-        myNav.className = 'carousel';
-        document.getElementById(obj).parentNode.appendChild(myNav);
+        this.init(obj, keys, nav);
+
+        // Until all browser accept the ResizeObserver, this is the only way
+        window.onresize = this.bindCallBack(this, this.resizing);
+        window.addEventListener("orientationchange", this.bindCallBack(this, this.resizing));
+    }
+
+    resizing() {
+        this.hideLeft = null;
+        this.hideRight = null;
+        this.nextRightSecond = null;
+        this.prevLeftSecond = null;
+        this.selected = null;
+        this.prev = null;
+        this.next = null;
+        this.maxHeight = 0;
 
         for (let z = 0; z < this.images.length; z++) {
             let elem = this.images[z];
+            elem.removeAttribute('class');
+            elem.removeAttribute('style');
+        }
+
+        this.init(this.objName, this.keys, this.navigation);
+    }
+
+    init(obj, keys, nav) {
+        this.navigation = nav;
+        this.objName = obj;
+        this.keys = keys;
+        this.images = document.querySelectorAll(`#${obj} > div`);
+        this.obj = document.getElementById(obj);
+
+        let selectedNum = Math.floor(this.images.length / 2);
+
+        if (nav) {
+            let myNav = document.createElement('nav');
+            myNav.className = 'carousel';
+            document.getElementById(obj).parentNode.appendChild(myNav);
+        }
+
+        for (let z = 0; z < this.images.length; z++) {
+            let elem = this.images[z];
+
+            if (elem.offsetHeight > this.maxHeight) {
+                this.maxHeight = elem.offsetHeight;
+            }
+
             elem.setAttribute('pos', z);
             elem.addEventListener('click', () => {
                 this.setTransition(this.longSpeed);
                 this.moveToSelected(z);
             });
 
-
-            let input = document.createElement('input');
-            input.type = 'radio';
-            input.name = 'carousel-dots';
-            input.id = `carousel-item-${z}`;
-            myNav.appendChild(input);
-            input.addEventListener('click', () => {
-                this.setTransition(this.longSpeed);
-                this.moveToSelected(z);
-            });
-            this.buttons.push(input);
-            if (z === selectedNum) {
-                input.checked = 'checked';
+            if (nav) {
+                let input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'carousel-dots';
+                input.id = `carousel-item-${z}`;
+                myNav.appendChild(input);
+                input.addEventListener('click', () => {
+                    this.setTransition(this.longSpeed);
+                    this.moveToSelected(z);
+                });
+                this.buttons.push(input);
+                if (z === selectedNum) {
+                    input.checked = 'checked';
+                }
+                let label = document.createElement('label');
+                label.setAttribute('for', `carousel-item-${z}`);
+                myNav.appendChild(label);
             }
-            let label = document.createElement('label');
-            label.setAttribute('for', `carousel-item-${z}`);
-            myNav.appendChild(label);
-
-
         }
         this.moveToSelected(selectedNum);
         for (let z = 0; z < this.images.length; z++) {
@@ -61,21 +105,23 @@ class Carousel3D {
             elem.style.left = elem.offsetLeft + 'px';
             this[elem.className] = elem.offsetLeft;
         }
-        document.addEventListener('keydown', (e) => {
-            switch (e.which) {
-                case 37: // left
-                    this.setTransition(this.longSpeed);
-                    this.moveToSelected('prev');
-                    break;
-                case 39: // right
-                    this.setTransition(this.longSpeed);
-                    this.moveToSelected('next');
-                    break;
-                default:
-                    return;
-            }
-            e.preventDefault();
-        });
+        if (keys) {
+            document.addEventListener('keydown', (e) => {
+                switch (e.which) {
+                    case 37: // left
+                        this.setTransition(this.longSpeed);
+                        this.moveToSelected('prev');
+                        break;
+                    case 39: // right
+                        this.setTransition(this.longSpeed);
+                        this.moveToSelected('next');
+                        break;
+                    default:
+                        return;
+                }
+                e.preventDefault();
+            });
+        }
         document.getElementById(obj).addEventListener('touchstart', (event) => {
             this.touchstartX = event.changedTouches[0].screenX;
         }, false);
@@ -85,7 +131,9 @@ class Carousel3D {
             this.moveWithSlide(this.touchstartX - this.touchendX);
         }, false);
 
-
+        let objStyle = this.obj.style;
+        objStyle.opacity = '1';
+        objStyle.height = this.maxHeight + "px";
     }
 
     moveToSelected(number) {
@@ -106,7 +154,10 @@ class Carousel3D {
         }
 
         selectedObj = this.images[number];
-        this.buttons[number].checked = 'checked';
+
+        if (this.navigation) {
+            this.buttons[number].checked = 'checked';
+        }
         if (selectedObj) {
             nextObj = selectedObj.nextElementSibling;
             prevObj = selectedObj.previousElementSibling;
@@ -181,9 +232,25 @@ class Carousel3D {
     }
 
     setTransition(speed) {
-        this.images.forEach((elem) => {
-            elem.style.transition = `transform ${speed}s, left ${speed}s, top ${speed}s, opacity ${speed}s, z-index 0s`;
-            elem.childNodes[1].style.transition = `width ${speed}s`;
+        this.images.forEach(elem => {
+            elem.style.transition = `transform ${speed}s, left ${speed}s, top ${speed}s, opacity ${speed}s, z-index 0s, width 1s, height 1s`;
+            if (elem.children[0].tagName === 'IMG') {
+                elem.children[0].style.transition = `width ${speed}s, height ${speed}s`;
+                elem.children[0].style.border = 'none';
+            }
         });
+    }
+
+    /**
+     * A helper for event binding  https://stackoverflow.com/a/193853
+     *
+     * @param scope The scope to bound with
+     * @param {Function} fn The function that will be bound
+     * @returns {function(...[*]=)}
+     */
+    bindCallBack(scope, fn) {
+        return function () {
+            fn.apply(scope, arguments);
+        };
     }
 }
