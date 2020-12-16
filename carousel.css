@@ -1,114 +1,146 @@
 
-#carousel {
+.carousel-3D {
     position: relative;
-    height: 600px;
+    min-height: 300px;
     top: 50%;
     left: 0px;
     width: 100%;
-    transform: translateY(-50%);
     overflow: hidden;
+    opacity: 0;
+    transition: opacity 2.5s;
 }
 
-#carousel div {
+.carousel-3D div {
     position: absolute;
     opacity: 1;
     border: 1px solid #ccc;
     padding: 20px;
     background: white;
     box-shadow: 0px 3px 3px #ccc;
+    width: 442px;
+    text-align: center;
 }
 
-#carousel div img {
+.carousel-3D div img {
     width: 400px;
+    height: 400px;
+    object-fit: cover;
+    margin-bottom: 16px;
 }
 
-#carousel div.hideLeft {
+.carousel-3D div:not(.selected) * {
+    pointer-events: none;
+}
+
+.carousel-3D div.hideLeft {
     left: -100px;
 }
 
-#carousel div.hideRight {
+.carousel-3D div.hideRight {
     left: 100%;
 }
 
-#carousel div.hideRight, #carousel div.hideLeft {
+.carousel-3D div.hideRight, .carousel-3D div.hideLeft {
     opacity: 0;
     top: 25%;
     filter: grayscale(0.7) brightness(1.2);
+    width: 332px;
 }
 
-#carousel div.hideLeft img, #carousel div.hideRight img {
+.carousel-3D div.hideLeft img, .carousel-3D div.hideRight img {
     width: 200px;
+    height: 200px;
 }
 
-#carousel div.prev, #carousel div.next {
+.carousel-3D div.prev, .carousel-3D div.next {
     z-index: 5;
     top: 10%;
     filter: grayscale(0.7) brightness(1.2);
+    width: 342px;
 }
 
-#carousel div.prev {
-    left: 20%;
+.carousel-3D div p {
+    transition: font-size 1s;
 }
 
-#carousel div.next {
+.carousel-3D div.prev p, .carousel-3D div.next p {
+    font-size: 0.83em;
+}
+
+.carousel-3D div.nextRightSecond p, .carousel-3D div.prevLeftSecond p {
+    font-size: 0.82em;
+}
+
+.carousel-3D div.hideLeft p, .carousel-3D div.hideRight p {
+    font-size: 0.82em;
+}
+
+.carousel-3D div.prev {
+    left: 17%;
+}
+
+.carousel-3D div.next {
     left: 60%;
 }
 
-#carousel div.next img, #carousel div.prev img {
+.carousel-3D div.next img, .carousel-3D div.prev img {
     width: 300px;
+    height: 300px;
 }
 
 
-#carousel div.nextRightSecond, #carousel div.prevLeftSecond {
+.carousel-3D div.nextRightSecond, .carousel-3D div.prevLeftSecond {
     z-index: 4;
     top: 20%;
     opacity: 0.4;
     filter: grayscale(0.7) brightness(1.2);
+    width: 332px;
 }
 
-#carousel div.nextRightSecond {
+.carousel-3D div.nextRightSecond {
     left: 77%;
 }
 
-#carousel div.prevLeftSecond {
-    left: 7%;
+.carousel-3D div.prevLeftSecond {
+    left: 3%;
 }
 
-#carousel div.nextRightSecond img, #carousel div.prevLeftSecond img {
+.carousel-3D div.nextRightSecond img, .carousel-3D div.prevLeftSecond img {
     width: 200px;
+    height: 200px;
 }
 
-#carousel div.selected {
+.carousel-3D div.selected {
     z-index: 10;
     left: calc(100% / 2 - 220px);
     top: 0%;
 }
 
 
-#carousel p {
+.carousel-3D p {
     width: 100%;
     text-align: center;
     font-style: italic;
 }
 
-nav.carousel {
+nav.carousel-3D {
     position: relative;
     left: 0;
     padding-left: calc(50% - 30px);
     top: 10%;
 }
 
-nav.carousel:hover {
+nav.carousel-3D:hover {
     cursor: default;
 }
 
 /* Hide the radio button */
-nav.carousel input[type=radio] {
+nav.carousel-3D input[type=radio] {
     display: none;
 }
 
 /* All styling takes place on the label element */
-nav.carousel label {
+nav.carousel-3D label {
     display: inline-block;
     background: #ddd;
     overflow: hidden;
@@ -119,39 +151,156 @@ nav.carousel label {
     box-shadow: inset 0 1px 1px 0 #999;
 }
 
-nav.carousel label:hover {
+nav.carousel-3D label:hover {
     background: #bbb;
     cursor: pointer;
     box-shadow: inset 0 1px 1px 0 #777;
 }
 
-nav.carousel input:checked + label {
+nav.carousel-3D input:checked + label {
     background: linear-gradient(#00CFFF, #1584bc);
     box-shadow: inset 0 0 1px 1px #087DC0;
 }
 
-@media screen and (max-width: 982px) {
-    #carousel div.nextRightSecond {
-        left: 70%;
+@media screen and (max-width: 1024px) {
+    .carousel-3D div.nextRightSecond {
     }
 
-    #carousel div.prevLeftSecond {
-        left: 5%;
+    .carousel-3D div.prevLeftSecond {
+        left: 8%;
     }
 
-    #carousel div.selected {
-        left: calc(100% / 2 - 220px);
+    .carousel-3D div.prev {
+        left: 23%;
     }
 
-    #carousel div.prev {
-        left: 15%;
+    .carousel-3D div.next {
     }
 
-    #carousel div.next {
-        left: 50%;
+    /**
+       mobile images
+    */
+    .carousel-3D div img {
+        width: 160px;
+        height: 160px;
+        object-fit: cover;
+        margin-bottom: 16px;
     }
 
-    nav.carousel {
+    .carousel-3D div.next img, .carousel-3D div.prev img {
+        width: 140px;
+        height: 140px;
+    }
+
+    .carousel-3D div.nextRightSecond img, .carousel-3D div.prevLeftSecond img {
+        width: 130px;
+        height: 130px;
+    }
+
+    .carousel-3D div.hideLeft img, .carousel-3D div.hideRight img {
+        width: 130px;
+        height: 130px;
+    }
+
+    /**
+        Mobile containers
+     */
+    .carousel-3D div {
+        width: 200px;
+        transition: .5s !important;
+    }
+
+    .carousel-3D div * {
+        transition: .5s !important;
+    }
+
+    .carousel-3D p {
+        line-height: 1.2em;
+    }
+
+    .carousel-3D div h1, .carousel-3D div h2, .carousel-3D div h3, .carousel-3D div h4, .carousel-3D div h5 {
+        word-break: break-word;
+    }
+
+    .carousel-3D div.selected {
+        top: 1%;
+        left: calc(100% / 2 - 100px) !important;
+    }
+
+    .carousel-3D div.next, .carousel-3D div.prev {
+        top: 2%;
+        width: 166px;
+    }
+
+    .carousel-3D div.nextRightSecond, .carousel-3D div.prevLeftSecond {
+        top: 3%;
+        width: 150px;
+    }
+
+    .carousel-3D div.hideRight, .carousel-3D div.hideLeft {
+        top: 3%;
+        width: 150px;
+    }
+
+    nav.carousel-3D {
         top: 50%;
+    }
+
+    .carousel-3D {
+        margin-bottom: -10px !important;
+    }
+}
+
+@media screen and (max-width: 982px) {
+    .carousel-3D div.nextRightSecond {
+        left: 82%;
+    }
+
+    .carousel-3D div.prevLeftSecond {
+        left: -3%;
+    }
+
+    .carousel-3D div.prev {
+        left: 13%;
+    }
+
+    .carousel-3D div.next {
+        left: 63%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .carousel-3D div.nextRightSecond {
+        left: 82%;
+    }
+
+    .carousel-3D div.prevLeftSecond {
+        left: -3%;
+    }
+
+    .carousel-3D div.prev {
+        left: -2%;
+    }
+
+    .carousel-3D div.next {
+        left: 63%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .carousel-3D div.nextRightSecond {
+        left: 90%;
+    }
+
+    .carousel-3D div.prevLeftSecond {
+        left: -20%;
+    }
+
+    .carousel-3D div.prev {
+        left: -17%;
+    }
+
+    .carousel-3D div.next {
+        left: 56%;
     }
 }
